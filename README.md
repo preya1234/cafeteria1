@@ -1,25 +1,30 @@
-# ☕ Brew Haven Cafeteria
+# ☕ Brew Haven Cafeteria Management System
 
-A full-stack cafe management system built with React.js and Node.js, featuring online ordering, user authentication, admin dashboard, and payment integration.
+A comprehensive full-stack cafeteria management platform featuring modern UI design, secure authentication, real-time order management, and complete admin dashboard for efficient cafeteria operations.
 
 ## 🌟 Features
 
 ### Customer Features
-- 🔐 User authentication (signup/signin)
-- 🛒 Shopping cart with real-time updates
-- ❤️ Wishlist functionality
-- 📱 Responsive design for all devices
-- 💳 Stripe payment integration
-- 📧 Email notifications for orders
-- 📊 Order history and tracking
-- ⭐ Product ratings and reviews
+- 🔐 Secure user authentication with JWT tokens
+- 🛒 Interactive shopping cart with real-time updates
+- ❤️ Wishlist functionality for favorite items
+- 📱 Fully responsive design for all devices
+- 💳 Stripe payment integration (demo endpoints)
+- 📧 Email notifications for order confirmations
+- 📊 Complete order history and tracking
+- ⭐ Product ratings and reviews system
+- 🔍 Advanced search and filtering
+- 🎨 Modern UI with custom branding
 
 ### Admin Features
-- 📊 Dashboard with analytics
-- 👥 User management
-- 🍕 Product management (CRUD operations)
-- 📦 Order management
-- 📈 Sales analytics and reports
+- 📊 Comprehensive dashboard with real-time analytics
+- 👥 Complete user management system
+- 🍕 Full product management (CRUD operations)
+- 📦 Advanced order management and status tracking
+- 📈 Detailed sales analytics and reporting
+- 🔐 Secure admin authentication
+- 🎛️ System settings and configuration
+- 📊 Customer insights and behavior analytics
 
 ## 🛠️ Tech Stack
 
@@ -47,16 +52,35 @@ A full-stack cafe management system built with React.js and Node.js, featuring o
 - **Frontend:** [Deployed on Vercel](https://your-frontend-url.vercel.app)
 - **Backend API:** [Deployed on Render](https://your-backend-url.onrender.com)
 
+> **Note:** Update the URLs above with your actual deployment links
+
 ## 📸 Screenshots
 
 ### Homepage
 ![Homepage](/screenshots/homepage.png)
 
-### Menu Page
+### Menu Page with Search & Filters
 ![Menu](/screenshots/menu.png)
 
 ### Admin Dashboard
 ![Admin Dashboard](/screenshots/admin-dashboard.png)
+
+### Shopping Cart
+![Cart](/screenshots/cart.png)
+
+### Order History
+![Order History](/screenshots/order-history.png)
+
+> **Note:** Add your actual screenshots to the `/screenshots` directory
+
+## 🚀 Quick Start
+
+### Test Credentials
+- **Admin Login:** `admin@brewhaven.com` / `admin123`
+- **Test User:** Create account or use any email for testing
+
+### Default Admin Access
+The system comes with a pre-configured admin account for immediate testing of admin features.
 
 ## 🏗️ Installation & Setup
 
@@ -66,55 +90,75 @@ A full-stack cafe management system built with React.js and Node.js, featuring o
 - Git
 
 ### 1. Clone the Repository
-\`\`\`bash
+```bash
 git clone https://github.com/yourusername/cafeteria-management-system.git
 cd cafeteria-management-system
-\`\`\`
+```
+
+> **Note:** Replace `yourusername` with your actual GitHub username
 
 ### 2. Backend Setup
-\`\`\`bash
+```bash
 cd server
 npm install
-\`\`\`
+```
 
-Create a \`.env\` file in the server directory:
-\`\`\`env
+Create a `.env` file in the server directory:
+```env
 PORT=3001
 NODE_ENV=development
 MONGODB_URI=mongodb://127.0.0.1:27017/Cafeteria
-JWT_SECRET=your_super_secret_jwt_key
+JWT_SECRET=your_super_secret_jwt_key_here
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
 STRIPE_SECRET_KEY=your_stripe_secret_key
 FRONTEND_URL=http://localhost:5173
-\`\`\`
+```
 
-Seed the database:
-\`\`\`bash
+Seed the database with sample products:
+```bash
 npm run seed
-\`\`\`
+```
 
-Start the server:
-\`\`\`bash
+Start the backend server:
+```bash
 npm run dev
-\`\`\`
+```
 
 ### 3. Frontend Setup
-\`\`\`bash
+```bash
 cd Frontend
 npm install
-\`\`\`
+```
 
-Create a \`.env\` file in the Frontend directory:
-\`\`\`env
+Create a `.env` file in the Frontend directory:
+```env
 VITE_API_URL=http://localhost:3001
 VITE_APP_NAME=Brew Haven Cafeteria
-\`\`\`
+```
 
 Start the development server:
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
+
+The application will be available at `http://localhost:5173`
+
+## ✨ Recent Updates
+
+### Latest Features & Improvements
+- 🎨 **Custom Logo Implementation** - Added professional favicon.svg logo to header
+- 🔐 **Enhanced Admin Security** - Fixed authentication with proper JWT token handling
+- ❤️ **Wishlist Bug Fix** - Resolved backend typo causing wishlist failures
+- 🎯 **UI Improvements** - Removed unnecessary sections for cleaner design
+- 🐛 **Debugging Tools** - Added comprehensive logging for troubleshooting
+- 🔄 **Cache Management** - Implemented cache-busting for favicon updates
+- 🚪 **Admin Logout Fix** - Proper logout functionality across all admin pages
+
+### Version History
+- **v1.2.0** - Logo implementation and admin panel fixes
+- **v1.1.0** - Wishlist functionality and UI improvements
+- **v1.0.0** - Initial release with core features
 
 ## 🌐 Deployment Guide
 
@@ -196,6 +240,8 @@ VITE_APP_NAME=Brew Haven Cafeteria
 - LinkedIn: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)
 - GitHub: [Your GitHub](https://github.com/yourusername)
 - Email: your.email@example.com
+
+> **Note:** Update the author information above with your actual details
 
 ## 📄 License
 
