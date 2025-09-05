@@ -26,11 +26,30 @@ const AdminProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products`);
+      const adminToken = localStorage.getItem('adminToken');
+      
+      if (!adminToken) {
+        console.log('No admin token found, redirecting to login');
+        navigate('/admin/login');
+        return;
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products`, {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
       if (response.ok) {
         const data = await response.json();
         setProducts(data.products || []);
+      } else if (response.status === 401) {
+        // Token expired or invalid
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        navigate('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -40,16 +59,28 @@ const AdminProducts = () => {
   };
 
   const handleLogout = () => {
-    // Logout functionality removed - admin is now public
-    console.log('Logout clicked');
+    // Clear admin tokens from localStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
+    
+    // Redirect to admin login page
+    navigate('/admin/login');
   };
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
+      const adminToken = localStorage.getItem('adminToken');
+      
+      if (!adminToken) {
+        navigate('/admin/login');
+        return;
+      }
+
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products`, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
@@ -66,6 +97,11 @@ const AdminProducts = () => {
           available: true
         });
         fetchProducts();
+      } else if (response.status === 401) {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        navigate('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error adding product:', error);
@@ -75,9 +111,17 @@ const AdminProducts = () => {
   const handleEditProduct = async (e) => {
     e.preventDefault();
     try {
+      const adminToken = localStorage.getItem('adminToken');
+      
+      if (!adminToken) {
+        navigate('/admin/login');
+        return;
+      }
+
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products/${editingProduct._id}`, {
         method: 'PUT',
         headers: {
+          'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
@@ -94,6 +138,11 @@ const AdminProducts = () => {
           available: true
         });
         fetchProducts();
+      } else if (response.status === 401) {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        navigate('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error updating product:', error);
@@ -103,12 +152,28 @@ const AdminProducts = () => {
   const handleDeleteProduct = async (productId) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
+        const adminToken = localStorage.getItem('adminToken');
+        
+        if (!adminToken) {
+          navigate('/admin/login');
+          return;
+        }
+
         const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products/${productId}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${adminToken}`,
+            'Content-Type': 'application/json'
+          }
         });
 
         if (response.ok) {
           fetchProducts();
+        } else if (response.status === 401) {
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUser');
+          navigate('/admin/login');
+          return;
         }
       } catch (error) {
         console.error('Error deleting product:', error);

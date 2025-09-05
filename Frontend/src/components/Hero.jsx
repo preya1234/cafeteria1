@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header.jsx';
-import CafeHeroImage from '../assets/Cafe_Hero.avif';
+import CafeHeroImage from '../assets/Cafe_Hero.jpg';
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);

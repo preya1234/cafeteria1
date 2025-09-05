@@ -23,8 +23,21 @@ const AdminAnalytics = () => {
 
   const fetchAnalytics = async () => {
     try {
+      const adminToken = localStorage.getItem('adminToken');
+      
+      if (!adminToken) {
+        console.log('No admin token found, redirecting to login');
+        navigate('/admin/login');
+        return;
+      }
+
       // For now, we'll use the existing stats endpoint
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/stats`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/stats`, {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -38,6 +51,12 @@ const AdminAnalytics = () => {
           monthlyRevenue: [],
           orderStatusCounts: {}
         });
+      } else if (response.status === 401) {
+        // Token expired or invalid
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        navigate('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error fetching analytics:', error);
@@ -47,8 +66,12 @@ const AdminAnalytics = () => {
   };
 
   const handleLogout = () => {
-    // Logout functionality removed - admin is now public
-    console.log('Logout clicked');
+    // Clear admin tokens from localStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
+    
+    // Redirect to admin login page
+    navigate('/admin/login');
   };
 
   const styles = {

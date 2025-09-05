@@ -15,21 +15,52 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Check if admin is logged in
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      navigate('/admin/login');
+      return;
+    }
+    
     fetchDashboardData();
-  }, []);
+  }, [navigate]);
 
   const fetchDashboardData = async () => {
     try {
+      const adminToken = localStorage.getItem('adminToken');
+      
+      if (!adminToken) {
+        console.log('No admin token found, redirecting to login');
+        navigate('/admin/login');
+        return;
+      }
+
       // Fetch dashboard statistics
-      const statsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/stats`);
+      const statsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/stats`, {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
         setStats(statsData);
+      } else if (statsResponse.status === 401) {
+        // Token expired or invalid
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        navigate('/admin/login');
+        return;
       }
 
       // Fetch recent orders
-              const ordersResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/recent-orders`);
+      const ordersResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/recent-orders`, {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
       if (ordersResponse.ok) {
         const ordersData = await ordersResponse.json();
@@ -43,8 +74,12 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    // Logout functionality removed - admin is now public
-    console.log('Logout clicked');
+    // Clear admin tokens from localStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
+    
+    // Redirect to admin login page
+    navigate('/admin/login');
   };
 
   const styles = {

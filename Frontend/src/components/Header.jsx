@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from './CartContext.jsx';
 import { useAuth } from './AuthContext.jsx';
+import CoffeeLogo from '../assets/favicon.svg';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -72,9 +73,10 @@ const Header = () => {
       textDecoration: 'none',
     },
     logo: {
-      width: '36px',
-      height: '36px',
+      width: '42px',
+      height: '42px',
       borderRadius: '8px',
+      filter: isHomePage ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' : 'none',
     },
     brandText: {
       fontSize: '24px',
@@ -231,8 +233,8 @@ const Header = () => {
       <nav style={styles.nav}>
         <Link to="/" style={styles.brandContainer}>
           <img
-            src="https://cdn-icons-png.flaticon.com/512/415/415733.png"
-            alt="logo"
+            src={CoffeeLogo}
+            alt="Brew Haven Coffee Logo"
             style={styles.logo}
           />
           <span style={styles.brandText}>Brew Haven</span>

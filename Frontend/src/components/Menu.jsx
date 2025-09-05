@@ -244,6 +244,7 @@ const Menu = () => {
         }
       } else {
         // Add to wishlist
+        console.log('🔄 Adding to wishlist:', { productId, token: token ? 'present' : 'missing' });
         const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/wishlist`, {
           method: 'POST',
           headers: {
@@ -252,6 +253,8 @@ const Menu = () => {
           },
           body: JSON.stringify({ productId })
         });
+
+        console.log('📡 Wishlist response status:', response.status);
 
         if (response.ok) {
           // Update local state after successful addition

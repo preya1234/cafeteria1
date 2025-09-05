@@ -4,6 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+// const cloudinary = require('cloudinary').v2; // Temporarily commented for local development
 const userModel = require('./models/Customer');
 const productModel = require('./models/Product');
 const jwt = require('jsonwebtoken');
@@ -30,6 +31,24 @@ function authenticateAdmin(req, res, next) {
     req.user = user;
     next();
   });
+}
+
+// Configure Cloudinary (commented for local development)
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET
+// });
+
+// Helper function to get Cloudinary URL
+function getCloudinaryUrl(category, filename) {
+  if (!process.env.CLOUDINARY_CLOUD_NAME) {
+    // Fallback to local files if Cloudinary not configured
+    return `${process.env.BACKEND_URL || 'http://localhost:3001'}/images/${category}/${filename}`;
+  }
+  
+  // Use Cloudinary URL
+  return `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/v1/cafeteria/${category}/${filename}`;
 }
 
 const app = express();
@@ -82,21 +101,33 @@ app.get('/default-avatar.svg', (req, res) => {
   res.sendFile(path.join(__dirname, 'default-avatar.svg'));
 });
 
-// Add specific image serving route for better compatibility
+// Enhanced image serving route with Cloudinary fallback
 app.get('/images/:category/:filename', (req, res) => {
   try {
     const { category, filename } = req.params;
+    
+    // First try Cloudinary
+    if (process.env.CLOUDINARY_CLOUD_NAME) {
+      const cloudinaryUrl = getCloudinaryUrl(category, filename);
+      console.log(`🔍 Redirecting to Cloudinary: ${cloudinaryUrl}`);
+      return res.redirect(cloudinaryUrl);
+    }
+    
+    // Fallback to local files
     const imagePath = path.join(__dirname, 'images', category, filename);
+    console.log(`🔍 Requesting local image: ${imagePath}`);
     
-    console.log(`🔍 Requesting image: ${imagePath}`);
-    
-    // Check if file exists
     if (fs.existsSync(imagePath)) {
-      console.log(`✅ Image found: ${imagePath}`);
+      console.log(`✅ Local image found: ${imagePath}`);
       res.sendFile(imagePath);
     } else {
-      console.log(`❌ Image not found: ${imagePath}`);
-      res.status(404).json({ error: 'Image not found', path: imagePath });
+      console.log(`❌ Local image not found: ${imagePath}`);
+      // Return a placeholder image URL
+      res.status(404).json({ 
+        error: 'Image not found', 
+        path: imagePath,
+        cloudinaryUrl: getCloudinaryUrl(category, filename)
+      });
     }
   } catch (error) {
     console.error('Error serving image:', error);
@@ -104,21 +135,32 @@ app.get('/images/:category/:filename', (req, res) => {
   }
 });
 
-// Add API image serving route
+// Enhanced API image serving route
 app.get('/api/images/:category/:filename', (req, res) => {
   try {
     const { category, filename } = req.params;
+    
+    // First try Cloudinary
+    if (process.env.CLOUDINARY_CLOUD_NAME) {
+      const cloudinaryUrl = getCloudinaryUrl(category, filename);
+      console.log(`🔍 API redirecting to Cloudinary: ${cloudinaryUrl}`);
+      return res.redirect(cloudinaryUrl);
+    }
+    
+    // Fallback to local files
     const imagePath = path.join(__dirname, 'images', category, filename);
+    console.log(`🔍 Requesting API local image: ${imagePath}`);
     
-    console.log(`🔍 Requesting API image: ${imagePath}`);
-    
-    // Check if file exists
     if (fs.existsSync(imagePath)) {
-      console.log(`✅ API Image found: ${imagePath}`);
+      console.log(`✅ API local image found: ${imagePath}`);
       res.sendFile(imagePath);
     } else {
-      console.log(`❌ API Image not found: ${imagePath}`);
-      res.status(404).json({ error: 'Image not found', path: imagePath });
+      console.log(`❌ API local image not found: ${imagePath}`);
+      res.status(404).json({ 
+        error: 'Image not found', 
+        path: imagePath,
+        cloudinaryUrl: getCloudinaryUrl(category, filename)
+      });
     }
   } catch (error) {
     console.error('Error serving API image:', error);
@@ -342,28 +384,37 @@ app.post('/wishlist', authenticateJWT, async (req, res) => {
     const userId = req.user.userId;
     const { productId } = req.body;
 
+    console.log('🔍 Wishlist POST request:', { userId, productId });
+
     if (!productId) {
+      console.log('❌ No productId provided');
       return res.status(400).json({ error: 'Product ID is required' });
     }
 
     // Check if product exists
     const product = await productModel.findById(productId);
     if (!product) {
+      console.log('❌ Product not found:', productId);
       return res.status(404).json({ error: 'Product not found' });
     }
+
+    console.log('✅ Product found:', product.name);
 
     // Check if already in wishlist
     const existingWishlistItem = await Wishlist.findOne({ userId, productId });
     if (existingWishlistItem) {
+      console.log('❌ Product already in wishlist');
       return res.status(409).json({ error: 'Product already in wishlist' });
     }
 
+    console.log('✅ Creating wishlist item...');
     const wishlistItem = await Wishlist.create({ userId, productId });
     const populatedItem = await Wishlist.findById(wishlistItem._id).populate('productId');
     
+    console.log('✅ Wishlist item created successfully');
     res.status(201).json(populatedItem);
   } catch (err) {
-    console.error(err);
+    console.error('❌ Wishlist error:', err);
     if (err.code === 11000) {
       return res.status(409).json({ error: 'Product already in wishlist' });
     }

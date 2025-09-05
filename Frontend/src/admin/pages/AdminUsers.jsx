@@ -15,11 +15,30 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/users`);
+      const adminToken = localStorage.getItem('adminToken');
+      
+      if (!adminToken) {
+        console.log('No admin token found, redirecting to login');
+        navigate('/admin/login');
+        return;
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/users`, {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
       if (response.ok) {
         const data = await response.json();
         setUsers(data.users || []);
+      } else if (response.status === 401) {
+        // Token expired or invalid
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        navigate('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -29,8 +48,12 @@ const AdminUsers = () => {
   };
 
   const handleLogout = () => {
-    // Logout functionality removed - admin is now public
-    console.log('Logout clicked');
+    // Clear admin tokens from localStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
+    
+    // Redirect to admin login page
+    navigate('/admin/login');
   };
 
   const filteredUsers = users.filter(user => 

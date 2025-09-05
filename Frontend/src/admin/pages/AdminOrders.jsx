@@ -18,11 +18,30 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/orders`);
+      const adminToken = localStorage.getItem('adminToken');
+      
+      if (!adminToken) {
+        console.log('No admin token found, redirecting to login');
+        navigate('/admin/login');
+        return;
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/orders`, {
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
       if (response.ok) {
         const data = await response.json();
         setOrders(data.orders || []);
+      } else if (response.status === 401) {
+        // Token expired or invalid
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        navigate('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -32,15 +51,27 @@ const AdminOrders = () => {
   };
 
   const handleLogout = () => {
-    // Logout functionality removed - admin is now public
-    console.log('Logout clicked');
+    // Clear admin tokens from localStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
+    
+    // Redirect to admin login page
+    navigate('/admin/login');
   };
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-              const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/orders/${orderId}/status`, {
+      const adminToken = localStorage.getItem('adminToken');
+      
+      if (!adminToken) {
+        navigate('/admin/login');
+        return;
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
+          'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status: newStatus })
@@ -51,6 +82,11 @@ const AdminOrders = () => {
         console.log(`Order ${orderId} status updated to ${newStatus}`);
         // Refresh orders list
         fetchOrders();
+      } else if (response.status === 401) {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        navigate('/admin/login');
+        return;
       }
     } catch (error) {
       console.error('Error updating order status:', error);

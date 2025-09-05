@@ -4,7 +4,6 @@ import InfoSection from './InfoSection';
 
 // Lazy load components for better performance
 const PromoSection = lazy(() => import('./PromoSection'));
-const ProductSuggestionsSection = lazy(() => import('./ProductSuggestionsSection'));
 const TestimonialsSection = lazy(() => import('./TestimonialsSection'));
 const SpecialOffersSection = lazy(() => import('./SpecialOffersSection'));
 const NewsletterSection = lazy(() => import('./NewsletterSection'));
@@ -18,7 +17,6 @@ const Home = () => {
       <InfoSection />
       <Suspense fallback={<div style={{ padding: '40px', textAlign: 'center', color: '#b8860b' }}>Loading...</div>}>
         <PromoSection />
-        <ProductSuggestionsSection />
         <TestimonialsSection />
         <SpecialOffersSection />
         <NewsletterSection />
