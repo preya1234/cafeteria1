@@ -60,7 +60,6 @@ Your app is live at: `https://your-project.vercel.app`
 ## 📚 Detailed Guides
 - **Full Guide**: See `DEPLOYMENT_GUIDE.md`
 - **Environment Variables**: See `ENVIRONMENT_VARIABLES.md`
-- **Checklist**: See `DEPLOYMENT_CHECKLIST.md`
 
 ---
 
@@ -79,4 +78,5 @@ Your app is live at: `https://your-project.vercel.app`
 - GitHub: https://github.com
 
 Good luck! 🚀
+
 

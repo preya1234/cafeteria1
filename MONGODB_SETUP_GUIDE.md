@@ -44,8 +44,8 @@ This guide will walk you through setting up MongoDB Atlas and getting your conne
    - Click **"Create User"**
 
 3. **Save your credentials**:
-   - Username: `_________________`
-   - Password: `_________________`
+   - Username: `____Cafeteria_____________`
+   - Password: `____admin123_____________`
    - (Write these down somewhere safe!)
 
 ---

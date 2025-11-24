@@ -30,7 +30,7 @@
 - **Backend**: Node.js, Express.js, JWT, Bcrypt, Multer, Nodemailer
 - **Database**: MongoDB, Mongoose ODM
 - **Authentication**: JWT Tokens, Bcrypt Password Hashing
-- **Payment**: Stripe Integration (Demo Endpoints)
+- **Payment**: Demo Payment Integration (Card, UPI, Cash on Delivery)
 
 ---
 
@@ -142,7 +142,7 @@ const filteredProducts = products.filter(product => {
 - Order status tracking
 - Order history
 - Email notifications
-- Payment integration (Stripe demo)
+- Payment integration (Demo endpoints)
 
 ---
 
@@ -1853,7 +1853,7 @@ git push origin feature/new-feature
 4. **Progressive Web App**: Offline functionality and push notifications
 5. **AI Recommendations**: Machine learning for product suggestions
 6. **Mobile App**: React Native version
-7. **Payment Gateway**: Full Stripe integration
+7. **Payment Gateway**: Full payment gateway integration
 8. **Inventory Management**: Real-time stock tracking
 
 ### **Scalability Considerations:**
@@ -1925,7 +1925,7 @@ const projectStats = {
 - ✅ **Order Management**: Create, Track, Status updates
 - ✅ **Admin Dashboard**: Analytics, User management, Product management
 - ✅ **Responsive Design**: Mobile-first approach
-- ✅ **Payment Integration**: Stripe demo endpoints
+- ✅ **Payment Integration**: Demo payment endpoints (Card, UPI, Cash on Delivery)
 - ✅ **Email Notifications**: Order confirmations
 
 ---

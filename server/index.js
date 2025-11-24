@@ -4,7 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-// const cloudinary = require('cloudinary').v2; // Temporarily commented for local development
+
 const userModel = require('./models/Customer');
 const productModel = require('./models/Product');
 const jwt = require('jsonwebtoken');
@@ -31,24 +31,6 @@ function authenticateAdmin(req, res, next) {
     req.user = user;
     next();
   });
-}
-
-// Configure Cloudinary (commented for local development)
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET
-// });
-
-// Helper function to get Cloudinary URL
-function getCloudinaryUrl(category, filename) {
-  if (!process.env.CLOUDINARY_CLOUD_NAME) {
-    // Fallback to local files if Cloudinary not configured
-    return `${process.env.BACKEND_URL || 'http://localhost:3001'}/images/${category}/${filename}`;
-  }
-  
-  // Use Cloudinary URL
-  return `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/v1/cafeteria/${category}/${filename}`;
 }
 
 const app = express();
@@ -101,19 +83,10 @@ app.get('/default-avatar.svg', (req, res) => {
   res.sendFile(path.join(__dirname, 'default-avatar.svg'));
 });
 
-// Enhanced image serving route with Cloudinary fallback
+// Image serving route
 app.get('/images/:category/:filename', (req, res) => {
   try {
     const { category, filename } = req.params;
-    
-    // First try Cloudinary
-    if (process.env.CLOUDINARY_CLOUD_NAME) {
-      const cloudinaryUrl = getCloudinaryUrl(category, filename);
-      console.log(`🔍 Redirecting to Cloudinary: ${cloudinaryUrl}`);
-      return res.redirect(cloudinaryUrl);
-    }
-    
-    // Fallback to local files
     const imagePath = path.join(__dirname, 'images', category, filename);
     console.log(`🔍 Requesting local image: ${imagePath}`);
     
@@ -122,11 +95,9 @@ app.get('/images/:category/:filename', (req, res) => {
       res.sendFile(imagePath);
     } else {
       console.log(`❌ Local image not found: ${imagePath}`);
-      // Return a placeholder image URL
       res.status(404).json({ 
         error: 'Image not found', 
-        path: imagePath,
-        cloudinaryUrl: getCloudinaryUrl(category, filename)
+        path: imagePath
       });
     }
   } catch (error) {
@@ -135,19 +106,10 @@ app.get('/images/:category/:filename', (req, res) => {
   }
 });
 
-// Enhanced API image serving route
+// API image serving route
 app.get('/api/images/:category/:filename', (req, res) => {
   try {
     const { category, filename } = req.params;
-    
-    // First try Cloudinary
-    if (process.env.CLOUDINARY_CLOUD_NAME) {
-      const cloudinaryUrl = getCloudinaryUrl(category, filename);
-      console.log(`🔍 API redirecting to Cloudinary: ${cloudinaryUrl}`);
-      return res.redirect(cloudinaryUrl);
-    }
-    
-    // Fallback to local files
     const imagePath = path.join(__dirname, 'images', category, filename);
     console.log(`🔍 Requesting API local image: ${imagePath}`);
     
@@ -158,8 +120,7 @@ app.get('/api/images/:category/:filename', (req, res) => {
       console.log(`❌ API local image not found: ${imagePath}`);
       res.status(404).json({ 
         error: 'Image not found', 
-        path: imagePath,
-        cloudinaryUrl: getCloudinaryUrl(category, filename)
+        path: imagePath
       });
     }
   } catch (error) {
@@ -205,10 +166,11 @@ function authenticateJWT(req, res, next) {
   });
 }
 
-// 🔌 MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/Cafeteria')
-.then(() => console.log("✅ MongoDB connected"))
-.catch((err) => console.error("❌ MongoDB connection error:", err));
+// 🔌 MongoDB Atlas Connection
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://preyathakkar2602_db_user:MU1jpEYjgiigeW44@cluster0.2cwcywf.mongodb.net/Cafeteria?retryWrites=true&w=majority&appName=Cluster0';
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log("✅ MongoDB Atlas connected"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // 🚀 Signup Route
 app.post('/signup', async (req, res) => {

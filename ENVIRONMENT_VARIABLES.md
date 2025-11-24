@@ -14,10 +14,6 @@ JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
 FRONTEND_URL=https://your-frontend-url.vercel.app
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_gmail_app_password
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-STRIPE_SECRET_KEY=
 ```
 
 ### How to get each value:
@@ -38,14 +34,6 @@ STRIPE_SECRET_KEY=
    - Your Gmail address
    - Gmail App Password (not your regular password)
    - Get it from: https://support.google.com/accounts/answer/185833
-
-5. **CLOUDINARY_*** (Optional): 
-   - Only needed if using Cloudinary for image hosting
-   - Sign up at: https://cloudinary.com
-
-6. **STRIPE_SECRET_KEY** (Optional): 
-   - Only needed for real payments
-   - Get from: https://dashboard.stripe.com/apikeys
 
 ---
 
@@ -121,4 +109,5 @@ After setting environment variables, verify:
 - API calls work from frontend
 - Database connection works (check Render logs)
 - CORS is working (no CORS errors in browser console)
+
 

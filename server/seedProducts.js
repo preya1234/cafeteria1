@@ -1,15 +1,47 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const Product = require('./models/Product');
 
-mongoose.connect('mongodb://127.0.0.1:27017/Cafeteria', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('✅ MongoDB connected for seeding'))
+// MongoDB Atlas connection
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://preyathakkar2602_db_user:MU1jpEYjgiigeW44@cluster0.2cwcywf.mongodb.net/Cafeteria?retryWrites=true&w=majority&appName=Cluster0';
+
+// Connection options for better error handling
+const mongooseOptions = {
+  serverSelectionTimeoutMS: 10000, // Timeout after 10 seconds
+  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+};
+
+// Connect to MongoDB
+mongoose.connect(MONGODB_URI, mongooseOptions)
+  .then(() => {
+    console.log('✅ Connected to MongoDB Atlas');
+    // Only run seed after connection is established
+    seed();
+  })
   .catch((err) => {
-    console.error('❌ MongoDB connection error (seeder):', err);
+    console.error('❌ MongoDB connection error:', err.message);
+    console.error('\n💡 Troubleshooting steps:');
+    console.error('1. Create a .env file in the server directory with:');
+    console.error('   MONGODB_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/Cafeteria?retryWrites=true&w=majority');
+    console.error('');
+    console.error('2. Get your connection string from MongoDB Atlas:');
+    console.error('   - Go to: https://cloud.mongodb.com');
+    console.error('   - Click "Database" → "Connect" → "Connect your application"');
+    console.error('   - Copy the connection string and replace <password> with your actual password');
+    console.error('');
+    console.error('3. Check MongoDB Atlas settings:');
+    console.error('   - Database Access: Verify username and password are correct');
+    console.error('   - Network Access: Add your IP address (or use 0.0.0.0/0 for all IPs)');
+    console.error('');
+    console.error('4. Password encoding: If your password has special characters, URL-encode them:');
+    console.error('   @ → %40, # → %23, % → %25, etc.');
+    console.error('');
+    console.error('📝 Current connection string being used:');
+    const displayedURI = MONGODB_URI.replace(/:[^:@]+@/, ':****@'); // Hide password
+    console.error(`   ${displayedURI}`);
     process.exit(1);
   });
+
 const products = [
   // Coffee Category (9 items - matching actual files)
   {
@@ -589,20 +621,34 @@ const products = [
 
 async function seed() {
   try {
+    // Wait a bit to ensure connection is fully established
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    console.log('🔄 Starting to seed products...');
     await Product.deleteMany({});
+    console.log('✅ Cleared existing products');
+    
     await Product.insertMany(products);
-    console.log("✅ Products seeded!");
+    console.log("✅ Products seeded successfully!");
     console.log(`📊 Total products added: ${products.length}`);
     console.log(`☕ Coffee products: ${products.filter(p => p.category === 'Coffee').length}`);
     console.log(`🥐 Pastry products: ${products.filter(p => p.category === 'Pastries').length}`);
     console.log(`🍰 Dessert products: ${products.filter(p => p.category === 'Desserts').length}`);
     console.log(`🥨 Snack products: ${products.filter(p => p.category === 'Snacks').length}`);
     console.log(`🥤 Beverage products: ${products.filter(p => p.category === 'Beverages').length}`);
-    mongoose.disconnect();
+    
+    await mongoose.disconnect();
+    console.log('✅ Database connection closed');
+    process.exit(0);
   } catch (err) {
-    console.error("❌ Error seeding products:", err);
-    mongoose.disconnect();
+    console.error("❌ Error seeding products:", err.message);
+    if (err.message.includes('authentication failed')) {
+      console.error('\n🔐 Authentication Error - Please check:');
+      console.error('1. Username and password in connection string');
+      console.error('2. MongoDB Atlas user permissions');
+      console.error('3. Network Access (IP whitelist) in MongoDB Atlas');
+    }
+    await mongoose.disconnect();
+    process.exit(1);
   }
 }
-
-seed();

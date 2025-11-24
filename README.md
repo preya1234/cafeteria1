@@ -9,7 +9,7 @@ A comprehensive full-stack cafeteria management platform featuring modern UI des
 - 🛒 Interactive shopping cart with real-time updates
 - ❤️ Wishlist functionality for favorite items
 - 📱 Fully responsive design for all devices
-- 💳 Stripe payment integration (demo endpoints)
+- 💳 Demo payment integration (card, UPI, cash on delivery)
 - 📧 Email notifications for order confirmations
 - 📊 Complete order history and tracking
 - ⭐ Product ratings and reviews system
@@ -45,7 +45,6 @@ A comprehensive full-stack cafeteria management platform featuring modern UI des
 - **Bcrypt** - Password hashing
 - **Multer** - File uploads
 - **Nodemailer** - Email service
-- **Stripe** - Payment processing
 
 ## 🚀 Live Demo
 
@@ -76,7 +75,7 @@ A comprehensive full-stack cafeteria management platform featuring modern UI des
 ## 🚀 Quick Start
 
 ### Test Credentials
-- **Admin Login:** `admin@brewhaven.com` / `admin123`
+- **Admin Login:** `admin@cafeteria.com` / `admin123`
 - **Test User:** Create account or use any email for testing
 
 ### Default Admin Access
@@ -111,7 +110,6 @@ MONGODB_URI=mongodb://127.0.0.1:27017/Cafeteria
 JWT_SECRET=your_super_secret_jwt_key_here
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
-STRIPE_SECRET_KEY=your_stripe_secret_key
 FRONTEND_URL=http://localhost:5173
 ```
 
@@ -201,7 +199,6 @@ MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 EMAIL_USER=your_email
 EMAIL_PASS=your_app_password
-STRIPE_SECRET_KEY=your_stripe_key
 FRONTEND_URL=your_frontend_url
 \`\`\`
 
