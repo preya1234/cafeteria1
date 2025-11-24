@@ -54,7 +54,7 @@ const ProductCards = ({ products = [], onAddToCart, showcase = null }) => {
     
     setLoadingReviews(prev => ({ ...prev, [productId]: true }));
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/product-reviews/${productId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/product-reviews/${productId}`);
       if (response.ok) {
         const data = await response.json();
         setProductReviews(prev => ({ 
@@ -288,7 +288,7 @@ const ProductCards = ({ products = [], onAddToCart, showcase = null }) => {
                   <span style={styles.badge}>{product.badge}</span>
                 )}
                 <img 
-                  src={product.image ? `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/images/${product.image}` : '/menu-images/default-avatar.svg'} 
+                  src={product.image ? `${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/images/${product.image}` : '/menu-images/default-avatar.svg'} 
                   alt={product.name} 
                   style={{
                     ...styles.cardImage,

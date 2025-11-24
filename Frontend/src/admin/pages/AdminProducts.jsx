@@ -34,7 +34,7 @@ const AdminProducts = () => {
         return;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/admin/products`, {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ const AdminProducts = () => {
         return;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/admin/products`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${adminToken}`,
@@ -118,7 +118,7 @@ const AdminProducts = () => {
         return;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products/${editingProduct._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/admin/products/${editingProduct._id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${adminToken}`,
@@ -159,7 +159,7 @@ const AdminProducts = () => {
           return;
         }
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/products/${productId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/admin/products/${productId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${adminToken}`,
@@ -540,7 +540,7 @@ const AdminProducts = () => {
               }}
             >
               <img
-                src={product.image ? `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/images/${product.image}` : '/menu-images/default-avatar.svg'}
+                src={product.image ? `${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/images/${product.image}` : '/menu-images/default-avatar.svg'}
                 alt={product.name}
                 style={styles.productImage}
               />

@@ -359,7 +359,7 @@ const About = () => {
               </p>
             </div>
             <img 
-                              src={`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/images/coffee/Cappuccino.jpg`} 
+                              src={`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/images/coffee/Cappuccino.jpg`} 
               alt="Our Coffee Story" 
               style={styles.storyImage}
             />

@@ -57,7 +57,7 @@ const Menu = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/products`)
+    fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/products`)
       .then(res => res.json())
       .then((products) => {
         setProductsData(products);
@@ -95,7 +95,7 @@ const Menu = () => {
     
     try {
       setWishlistLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/wishlist`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/wishlist`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -197,7 +197,7 @@ const Menu = () => {
       
       if (isCurrentlyInWishlist) {
         // Remove from wishlist
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/wishlist/${productId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/wishlist/${productId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -245,7 +245,7 @@ const Menu = () => {
       } else {
         // Add to wishlist
         console.log('🔄 Adding to wishlist:', { productId, token: token ? 'present' : 'missing' });
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/wishlist`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/wishlist`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -371,7 +371,7 @@ const Menu = () => {
       // Clear each wishlist item individually using the working endpoint
       for (const product of wishlistProducts) {
         try {
-          const deleteResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/wishlist/${product._id}`, {
+          const deleteResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/wishlist/${product._id}`, {
             method: 'DELETE',
             headers: {
               'Authorization': `Bearer ${token}`
@@ -1419,7 +1419,7 @@ const Menu = () => {
         <span style={styles.productBadge}>{product.badge}</span>
       )}
       <img 
-                        src={`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/images/${product.image}`}
+                        src={`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/images/${product.image}`}
         alt={product.name}
         style={styles.productImage}
         onError={(e) => {
@@ -1535,7 +1535,7 @@ const Menu = () => {
           </button>
           <div style={styles.modalBody}>
             <img 
-              src={`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/images/${modalProduct.image}`}
+              src={`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/images/${modalProduct.image}`}
               alt={modalProduct.name}
               style={styles.modalImage}
               onError={(e) => {
@@ -1899,7 +1899,7 @@ const Menu = () => {
                         }}
                       >
                         <img
-                          src={`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/images/${product.image}`}
+                          src={`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/images/${product.image}`}
                           alt={product.name}
                           style={{
                             width: '100%',

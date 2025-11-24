@@ -1,4 +1,9 @@
-const API_BASE_URL = "https://cafeteria1-vodr.onrender.com/api";
+// Use environment variable with fallback to Render backend URL
+// This ensures production uses the correct backend automatically
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com';
+
+// Export helper function for components to use
+export const getApiUrl = () => API_BASE_URL;
 
 export const API_ENDPOINTS = {
   // Auth endpoints

@@ -39,7 +39,9 @@ app.use(cors({
   origin: [
     process.env.FRONTEND_URL || 'http://localhost:5173',
     'https://cafesync.vercel.app',
-    'https://cafesync1.vercel.app'
+    'https://cafesync1.vercel.app',
+    /\.netlify\.app$/,  // Allow all Netlify deployments
+    /\.vercel\.app$/    // Allow all Vercel deployments
   ],
   credentials: true
 }));

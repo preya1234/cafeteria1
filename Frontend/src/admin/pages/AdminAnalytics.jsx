@@ -32,7 +32,7 @@ const AdminAnalytics = () => {
       }
 
       // For now, we'll use the existing stats endpoint
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/stats`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/admin/stats`, {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'

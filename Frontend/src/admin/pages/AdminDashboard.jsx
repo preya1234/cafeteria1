@@ -36,7 +36,7 @@ const AdminDashboard = () => {
       }
 
       // Fetch dashboard statistics
-      const statsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/stats`, {
+      const statsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/admin/stats`, {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ const AdminDashboard = () => {
       }
 
       // Fetch recent orders
-      const ordersResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/admin/recent-orders`, {
+      const ordersResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/admin/recent-orders`, {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'

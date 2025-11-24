@@ -163,7 +163,7 @@ const Checkout = () => {
         }));
       console.log('Order payload items:', items); // Debug: ensure productId is present
       
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/orders`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -296,14 +296,14 @@ const Checkout = () => {
         };
 
         console.log('Cash order payload:', orderPayload);
-        console.log('Sending request to:', `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/orders`);
+        console.log('Sending request to:', `${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/orders`);
         console.log('Request headers:', {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         });
 
         // Create order directly
-        const orderRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/orders`, {
+        const orderRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/orders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -338,7 +338,7 @@ const Checkout = () => {
 
           // Send order confirmation email
           try {
-            const emailResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/send-order-email`, {
+            const emailResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/send-order-email`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -479,7 +479,7 @@ const Checkout = () => {
         hasPhone: !!paymentPayload.orderData.phone
       });
       
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/process-payment`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/process-payment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -505,7 +505,7 @@ const Checkout = () => {
         
         // Send order confirmation email
         try {
-          const emailResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/send-order-email`, {
+          const emailResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/send-order-email`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -707,7 +707,7 @@ const Checkout = () => {
         <h2 style={{ color: '#3b2f2f', fontWeight: 600, marginBottom: 18, fontSize: '1.3em' }}>Order Summary</h2>
         {cart.map(item => (
           <div key={item._id} style={{ display: 'flex', alignItems: 'center', marginBottom: 16, background: '#fff', borderRadius: 10, boxShadow: '0 1px 4px rgba(59,47,47,0.06)', padding: 10, flexWrap: 'wrap' }}>
-                            <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/images/${item.image}`} alt={item.name} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 6, marginRight: 14 }} />
+                            <img src={`${import.meta.env.VITE_API_URL || 'https://cafeteria1-vodr.onrender.com'}/images/${item.image}`} alt={item.name} style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 6, marginRight: 14 }} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 600 }}>{item.name}</div>
               <div style={{ color: '#b8860b' }}>₹{Number(item.price) || 0} x {Number(item.quantity) || 0}</div>
